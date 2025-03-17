@@ -1,0 +1,53 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.example.emotion_detection_flutter_app"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.emotion_detection_flutter_app"
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+dependencies {
+    // Include only tensorflow-lite
+    implementation 'org.tensorflow:tensorflow-lite:2.11.0'
+
+    // Ensure that litert-api is excluded completely by adding the exclude rule
+    implementation('com.google.ai.edge.litert:litert-api:1.0.1') {
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-api'
+    }
+
+    // Exclude the litert-api indirectly in other dependencies if necessary
+    configurations.all {
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-api'
+    }
+}
+
+flutter {
+    source = "../.."
+}
